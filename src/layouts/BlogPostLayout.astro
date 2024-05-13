@@ -1,0 +1,53 @@
+---
+import MainLayout from "../layouts/MainPageLayout.astro";
+import RelatedPosts from "../components/RelatedPosts.astro";
+import {slugify, formatDate, formatBlogPosts} from "../js/utils";
+
+const {frontmatter} = Astro.props;;
+const {title, description, date, category, author, image} = frontmatter;
+
+const allPosts = await Astro.glob("../pages/blogs/*.md");
+const formattedPosts = formatBlogPosts(allPosts);
+
+const relatedPosts = formattedPosts.filter((post) => post.frontmatter.category === category 
+&& post.frontmatter.title !== title).slice(0, 3);
+---
+
+<MainLayout title={title} description={description} image={frontmatter.image} frontmatter={frontmatter} robots={frontmatter.robots}>
+    <header>
+        <div class="flex justify-center p-2 my-4 mx-12">
+            <div class="text-center">
+                <h1 class="whitespace-normal p-2 m-2 text-5xl font-bold">
+                    {title}
+                </h1>
+                <h3 class="whitespace-normal p-2 m-2 text-lg">
+                    by <a href={`/author/${slugify(author)}`}>{author}</a>
+                </h3>
+                <p class="whitespace-normal p-2 m-2 text-lg">
+                    Published: {formatDate(date)}
+                </p>
+                <a href={`/category/${slugify(category)}`} class="text-white bg-cyan-700 rounded-md shadow-lg p-2 m-2 text-md whitespace-normal hover:bg-cyan-600">
+                    {category}
+                </a>
+                <img src={image.src} alt={image.alt} class="my-8" />
+            </div>
+        </div>
+        
+    </header> 
+    
+    <div class="mx-10 my-4 p-2 text-md text-justify text-lg">
+        <slot />
+    </div>
+
+    { relatedPosts.length > 0 &&
+    (<div class="Categories Tags flex justify-center">
+        <h1 class="text-3xl font-bold p-2 my-4">Other Similar Posts</h1>
+    </div>
+    
+    <div class="flex justify-center my-4">
+        <div class="grid grid-cols-2">
+            <RelatedPosts relatedPosts={relatedPosts} />
+        </div>
+    </div>)
+    }
+</MainLayout>

@@ -1,0 +1,22 @@
+---
+const {previousURL, nextURL} = Astro.props;
+---
+
+<nav>
+    {
+        previousURL && (
+            <a href={previousURL} class="button">{'⬅️ Previous Page'}</a>
+        )
+    }
+    {
+        nextURL && (
+            <a href={nextURL} class="button">{'Next Page ➡️'}</a>
+        )
+    }
+</nav>
+
+<style>
+    .button{
+        @apply shadow-2xl bg-green-200 border border-gray-100 inline-block p-2 my-2 mr-6 rounded-md text-right hover:bg-green-100 hover:cursor-pointer
+    }
+</style>

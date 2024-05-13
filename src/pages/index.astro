@@ -1,0 +1,35 @@
+---
+// Components
+import MainLayout from "../layouts/MainPageLayout.astro"
+import PostCard from "../components/PostCard.astro"
+
+// Utils
+import { formatBlogPosts } from "../js/utils"
+
+const allPosts = await Astro.glob("./blogs/*.md")
+const formattedPosts = formatBlogPosts(allPosts, {
+    limit: 4,
+})
+---
+
+<MainLayout title={"PlaceHolderHere's Website"} buttons = {[["Home", "/"], , ["Blogs", "/blogs"], ["About", "/About"], ["Contact Us", "Contact-Us"]]}>
+    <div class="flex justify-center text-white bg-slate-900 min-w-max pt-14">
+        <div class="min-w-full items-center p-8 text-center">
+            <img class="shadow-2xl rounded-full justify-center inline-block m-4" src="/images/headshot.jpg" width="200">
+                <div class="inline-block m-auto p-10 justify-center">
+                    <h1 class="text-6xl font-bold m-auto p-2">Welcome to My Blog!</h1>
+                    <br/>
+                    <a href="/About" class="my-10 p-2 rounded-md text-black border border-black bg-green-400 hover:bg-green-300 ">Learn more about me!</a>
+                </div>
+        </div>
+    </div>
+    <div class="flex justify-center">
+        <h1 class="p-2 m-2 mt-12 text-center text-6xl font-bold">Newest Blog Posts</h1>
+    </div>
+    <div class="justify-center p-12 text-center grid grid-cols-2">
+        {formattedPosts.map((post) => <PostCard frontmatter={post.frontmatter} url={post.url}/>)}          
+    </div>
+    <div class="flex justify-center">
+        <a href="/blogs/2" class="text-center p-4 m-4 text-2xl mb-20 bg-blue-900 text-white rounded-xl hover:bg-blue-800">See More Blog Posts!</a> 
+    </div>
+</MainLayout>

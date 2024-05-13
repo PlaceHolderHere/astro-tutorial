@@ -1,0 +1,9 @@
+---
+import PostCard from "./PostCard.astro";
+const {relatedPosts} = Astro.props;
+---
+{
+    relatedPosts.map((post) => (
+        <PostCard frontmatter={post.frontmatter} url={post.url}/>         
+    ))
+}

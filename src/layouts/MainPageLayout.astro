@@ -1,0 +1,36 @@
+---
+import Navbar from "../components/navbar.astro"
+import Seo from "../components/Seo.astro"
+
+// interface Props{
+//     title?:string
+//     description?:string
+// 	buttons?:Array<Array<String>>
+// }
+
+const {title = "Null", description = "Null", buttons = [["Home", "/"], , ["Blogs", "/blogs"], ["About", "/About"], ["Contact Us", "Contact-Us"]]
+	, image, frontmatter, robots
+} = Astro.props
+---
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+        <meta name="description" content={description}/>
+		<title>{title}</title>
+
+		<Seo title={title}
+		description={description}
+		url = {Astro.url}
+		image={image}
+		frontmatter={frontmatter}
+		robots={robots},></Seo>
+	</head>
+	<body>
+		<Navbar navbarButtons={buttons}/>
+		<main>
+			<slot />
+		</main>
+	</body>
+	<footer class="p-10" />
+</html>

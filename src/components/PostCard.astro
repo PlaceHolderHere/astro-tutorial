@@ -1,0 +1,23 @@
+---
+import {slugify, formatDate } from "../js/utils";
+
+const { frontmatter, url } = Astro.props;
+
+const {title, date, author, image, description, category} = frontmatter;
+---
+<div class="flex justify-center p-2 my-12 mx-12 shadow-2xl rounded-lg hover:bg-slate-50">
+    <a href={url}>
+        <div class="text-center">
+            <img src={image.src} alt={image.alt} width="100%">
+            <h1 class="whitespace-normal m-2 text-4xl font-bold">
+                {title}
+            </h1>
+            <h3 class="whitespace-normal  m-2 text-lg">
+                by {author}
+            </h3>
+            <p class="whitespace-normal m-2 text-lg">
+                Published: {formatDate(date)}
+            </p>
+        </div>
+    </a>
+</div>

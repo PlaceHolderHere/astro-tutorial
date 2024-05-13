@@ -1,0 +1,46 @@
+---
+// Components
+import MainLayout from "../../layouts/MainPageLayout.astro";
+import PostCard from "../../components/PostCard.astro";
+
+// Utils
+import {slugify, formatBlogPosts} from "../../js/utils";
+
+export async function getStaticPaths() {
+    return [
+    {
+            params: {category: slugify("Reference Docs")},
+            props: {name: "Reference Docs"},
+        },
+        {
+            params: {category: slugify("General")},
+            props: {name: "General"},
+        },
+        {
+            params: {category: slugify("CSS")},
+            props: {name: "CSS"},
+        },
+        {
+            params: {category: slugify("Astro")},
+            props: {name: "Astro"},
+        },
+    ]
+}
+
+const {category} = Astro.params;
+const {name} = Astro.props;
+
+const allPosts = await Astro.glob("../blogs/*.md")
+const formattedPosts = formatBlogPosts(allPosts)
+const catPosts = formattedPosts.filter((post) => slugify(post.frontmatter.category) === category)
+---
+<MainLayout title={name}>
+    <div class="flex justify-center">
+        <h1 class="text-6xl font-bold m-4 mt-20">Posts about {name}</h1>
+    </div>
+    <div class="flex justify-center">
+        <ul class="text-center">
+            {catPosts.map((post) => <PostCard frontmatter={post.frontmatter} url={post.url}/>)}          
+        </ul> 
+    </div>    
+</MainLayout>
